@@ -33,7 +33,7 @@ SearchTree<Entry<string, string> >* buildBST_fromDatafile(const std::string& fil
 	for (int i = 3; i < 174; i++)
 	{
 		getline(f, s);
-		bst->insert(s.substr(0, s.find(",")), s.substr(s.find(",") + 1, s.find("  ")));
+		bst->insert(s.substr(0, s.find(",")), s.substr(s.find(",") + 1, s.find("  "))); //seperates s
 	}
 	f.close();
 	return bst;
