@@ -2,9 +2,11 @@
 // Data Structures and Algorithms in C++, Goodrich, Tamassia, and Mount, 2nd Ed., 2011.
 //
 
+
 #pragma once
 #include "LinkedBinaryTree.h"
 #include "SLinkedList.h"
+
 
 template <typename K, typename V>
 class Entry {
@@ -22,12 +24,13 @@ private:
 	Value _value;
 };
 
+
 template <typename E>
 class SearchTree {					// a binary search tree
 public: 						// public types
 	typedef typename E::Key K;				// a key
 	typedef typename E::Value V;			// a value
-	// class Iterator;					// an iterator/position
+											// class Iterator;					// an iterator/position
 public:						// public functions
 	SearchTree();					// constructor
 	int size() const; 					// number of entries
@@ -36,19 +39,19 @@ public:						// public functions
 	SLinkedList<E>*  findPath(const K& k);
 	Position<E> insert(const K& k, const V& x);		// insert (k,x)
 	void erase(const K& k);	// remove key k entry
-	//void erase(const Iterator& p);			// remove entry at p
-	// Iterator begin();					// iterator to first entry
-	//Iterator end();					// iterator to end entry
+							//void erase(const Iterator& p);			// remove entry at p
+							// Iterator begin();					// iterator to first entry
+							//Iterator end();					// iterator to end entry
 	void printInorder() const;
 protected:						// local utilities
-	// BinaryTree<E> BinaryTree;			// linked binary tree
-	//typedef typename BinaryTree::Position TPos;		// position in the tree
+								// BinaryTree<E> BinaryTree;			// linked binary tree
+								//typedef typename BinaryTree::Position TPos;		// position in the tree
 	Position<E> root() const;					// get virtual root
 	Position<E> finder(const K& k, Position<E>& v);		// find utility
 	Position<E> inserter(const K& k, const V& x);		// insert utility
 	void inorder(Position<E>& v) const; // inorder print utility
 	Position<E> eraser(Position<E>& v);				// erase utility
-	// Position restructure(const TPos& v);	// restructure
+													// Position restructure(const TPos& v);	// restructure
 private: 						// member data
 	LinkedBinaryTree<E> T;					// the binary tree
 	int n;						// number of entries
@@ -57,11 +60,14 @@ public:
 };
 
 
+
+
 template <typename E>					// constructor
 SearchTree<E>::SearchTree() : T(), n(0)
 {
 	T.addRoot();
 }
+
 
 template <typename E>					// get virtual root
 Position<E> SearchTree<E>::root() const
@@ -69,17 +75,20 @@ Position<E> SearchTree<E>::root() const
 	return T.root();
 }
 
+
 template <typename E>
 int SearchTree<E>::size() const			// number of nodes
 {
 	return n;
 }
 
+
 template <typename E>
 bool SearchTree<E>::empty() const			// is tree empty?
 {
 	return size() == 0;
 }
+
 
 template <typename E>
 void SearchTree<E>::printInorder() const			// is tree empty?
@@ -88,6 +97,7 @@ void SearchTree<E>::printInorder() const			// is tree empty?
 	inorder(root());
 	cout << endl;
 }
+
 
 template <typename E>
 void SearchTree<E>::inorder(Position<E>& v) const			// is tree empty?
@@ -98,9 +108,10 @@ void SearchTree<E>::inorder(Position<E>& v) const			// is tree empty?
 	inorder(v.right());
 }
 
+
 template <typename E>					// find utility
 Position<E> SearchTree<E>::finder(const K& k, Position<E>& v) {
-        Position<E> l = v.left(), r = v.right();
+	Position<E> l = v.left(), r = v.right();
 	if (v.isExternal()) return v;			// key not found
 	if (k < (*v).key()) return finder(k, l);	// search left subtree
 	else if ((*v).key() < k) return finder(k, r);	// search right subtree
@@ -108,25 +119,44 @@ Position<E> SearchTree<E>::finder(const K& k, Position<E>& v) {
 }
 
 
+
+
 template <typename E>					// find entry with key k
 Position<E> SearchTree<E>::find(const K& k) {
-        Position<E> r = root();
+	Position<E> r = root();
 	return finder(k, r);				// search from root
 }
+
 
 // TO DO: implement the finderPath function
 template <typename E>					// find entry with key k
 SLinkedList<E>* SearchTree<E>::findPath(const K& k) {
+
+
 	// TO DO: you need to implement a function to return the entries of search path
 	//         OK to create another member function to be called here if needed
-
-  return nullptr;
+	SLinkedList<E>* List = new SLinkedList<E>;
+	// T is bst
+	// E is entry
+	Position<E> temp = root();	//make temp Entry, start @ root
+	while ((*temp).key() != k)
+	{
+		List->addFront(*temp);//put entry of temp on List
+		if ((*temp).key() < k) temp = temp.right();
+		else temp = temp.left();
+		//cout << (*temp).key() << ", " << (*temp).value()<<endl;
+		//repeat till k = temp.k
+	}
+	List->addFront(*temp);
+	return List;
 }
+
+
 
 
 template <typename E>					// insert utility
 Position<E> SearchTree<E>::inserter(const K& k, const V& x) {
-        Position<E> r = root();
+	Position<E> r = root();
 	Position<E> v = finder(k, r);				// search from root
 	if (!v.isExternal()) {			// key already exists?
 		(*v).setValue(x);			// update value
@@ -140,18 +170,20 @@ Position<E> SearchTree<E>::inserter(const K& k, const V& x) {
 	return v;						// return insert position
 }
 
+
 template <typename E>					// insert (k,x)
 Position<E> SearchTree<E>::insert(const K& k, const V& x)
 {
 	return inserter(k, x);
 }
 
+
 template <typename E>					// remove utility
 Position<E> SearchTree<E>::eraser(Position<E>& v) {
 	Position<E> w;
-	if (v.left().isExternal()) 
+	if (v.left().isExternal())
 		w = v.left();		// remove from left
-	else if (v.right().isExternal()) 
+	else if (v.right().isExternal())
 		w = v.right();	// remove from right
 	else {						// both internal?
 		w = v.right();					// go to right subtree
@@ -163,6 +195,7 @@ Position<E> SearchTree<E>::eraser(Position<E>& v) {
 	n--;						// one less entry
 	return T.removeAboveExternal(w);			// remove w and parent
 }
+
 
 template <typename E>					// remove key k entry
 void SearchTree<E>::erase(const K& k) {
