@@ -37,7 +37,7 @@ int main() {
 	cout << "==== Your own name test ====" << endl;
 
 	// TO DO : you need to search your own first name here
-	string myownFirstName = "put your own first name here" ;
+	string myownFirstName = "Nelson" ;
 
 	sll1 = bst1->findPath(myownFirstName);
 	cout << myownFirstName << ": " << sll1->size() << " steps" << endl;
