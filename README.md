@@ -15,4 +15,3 @@ Do they give the same performance in terms of key searching or firstname searchi
 explain your answer. 
 
 ANSWER: No the performance isn't the same, because one of them wasn't balance. The list of name in datafile1 when added to the tree is right side unbalance therefore took more steps than the datafile2 list of name. The datafile2 which is already sorted, so that it took the path of what a balanced tree would have taken.  
-
