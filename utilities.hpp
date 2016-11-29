@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include "SearchTree.h"
+#include <algorithm>
 
 
 using namespace std;
@@ -33,7 +34,11 @@ SearchTree<Entry<string, string> >* buildBST_fromDatafile(const std::string& fil
 	for (int i = 3; i < 174; i++)
 	{
 		getline(f, s);
-		bst->insert(s.substr(0, s.find(",")), s.substr(s.find(",") + 1, s.find("  "))); //seperates s
+		firstName = s.substr(0, s.find(","));                                             //name = beginning to ','
+		movie = s.substr(s.find(",") + 1, s.find('\n'));                                  //movie = whatever between ',' and '\n'
+		movie.erase(std::remove(movie.begin(), movie.end(), '\n'), movie.end());          //trying to remove '\n'
+		bst->insert(firstName, movie);                                                    //stick it in the tree
+																						  //bst->insert(s.substr(0, s.find(",")), s.substr(s.find(",") + 1, s.find('\n')));
 	}
 	f.close();
 	return bst;
@@ -52,5 +57,3 @@ void printInReverseOder(SNode<Entry<string, string> >* node)
 
 
 }
-
-
