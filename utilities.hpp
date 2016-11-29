@@ -30,11 +30,14 @@ SearchTree<Entry<string, string> >* buildBST_fromDatafile(const std::string& fil
 
 
 	// TO DO: implement the creation of a binary search tree
-	for (int i = 3; i < 174; i++)
-	{
-		getline(f, s);
-		bst->insert(s.substr(0, s.find(",")), s.substr(s.find(",") + 1, s.find("  "))); //seperates s
-	}
+	while (getline(f,s)) {
+        
+        int i = s.find(',');
+        firstName = s.substr(0, i);
+        movie = s.substr(i+1, s.length());
+        movie.erase(movie.find_last_not_of(" \n\r\t") + 1);
+        bst->insert(firstName, movie);
+    }
 	f.close();
 	return bst;
 }
